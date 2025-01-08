@@ -1,42 +1,37 @@
-import { useState } from "react";
+import { useRef } from "react";
 import { useAppContext } from "../context/AppContext";
 import { TextField, Button, Box } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import globalStyles from "../Styles/GlobalStyles";
 
 const SearchBar = () => {
-  const [query, setQuery] = useState("");
-  const { articles, setFilteredArticles } = useAppContext();
+  const inputRef = useRef(); // Referencia al input
+  const { searchArticles } = useAppContext(); // Acceso a la función de búsqueda
 
   const handleSearch = () => {
-    if (query.trim()) {
-      const filtered = articles.filter((article) =>
-        article.title.toLowerCase().includes(query.toLowerCase())
-      );
-      setFilteredArticles(filtered);
-    } else {
-      setFilteredArticles(articles);
-    }
+    const query = inputRef.current?.value.trim(); // Captura el valor del input
+    searchArticles(query); // Realiza la búsqueda
   };
 
   return (
-    <Box sx={globalStyles.container}>
-      {/* Campo de texto para la búsqueda */}
+    <Box
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        gap: 2,
+        mb: 4,
+      }}
+    >
       <TextField
+        inputRef={inputRef} // Referencia asignada al input
         label="Buscar noticias..."
         variant="outlined"
         fullWidth
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        sx={globalStyles.inputField}
       />
-      {/* Botón para ejecutar la búsqueda */}
       <Button
         variant="contained"
         color="primary"
-        onClick={handleSearch}
         startIcon={<SearchIcon />}
-        sx={globalStyles.button}
+        onClick={handleSearch}
       >
         Buscar
       </Button>

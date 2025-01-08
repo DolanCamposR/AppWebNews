@@ -15,7 +15,7 @@ const FavoritesPage = () => {
       {favorites.length > 0 ? (
         <Grid container spacing={3}>
           {favorites.map((article, index) => (
-            <Grid item xs={12} sm={6} md={4} key={index}>
+            <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
               <NewsCard article={article} />
             </Grid>
           ))}

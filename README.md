@@ -8,6 +8,9 @@ Currently, two official plugins are available:
 - [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
 
+IMPORTANTE UTILIZAR LAS VERSIONES 18.3.1 de react y la version 6.0.7 de vite
+
+
 PASOS DE PREPARACION E INSTALACION:
 
 1. ABRIR CMD DESDE EL DIRECTORIO DEL ESCRITORIO

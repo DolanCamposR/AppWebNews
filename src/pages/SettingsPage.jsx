@@ -1,6 +1,5 @@
 import { useAppContext } from "../context/AppContext";
 import { Box, Typography, TextField, MenuItem, Select, Button } from "@mui/material";
-import globalStyles from "../Styles/GlobalStyles"; // Importamos los estilos globales
 
 const SettingsPage = () => {
   const { user, setUser, settings, setSettings, toggleTheme } = useAppContext();
@@ -18,44 +17,70 @@ const SettingsPage = () => {
   };
 
   return (
-    <Box sx={globalStyles.container}>
-      <Typography variant="h4" sx={globalStyles.pageTitle}>
+    <Box
+      sx={{
+        maxWidth: 600,
+        margin: "0 auto",
+        padding: 4,
+        display: "flex",
+        flexDirection: "column",
+        gap: 3,
+        backgroundColor: "background.paper",
+        borderRadius: 2,
+        boxShadow: 3,
+      }}
+    >
+      {/* Título */}
+      <Typography
+        variant="h4"
+        align="center"
+        sx={{
+          fontWeight: "bold",
+          marginBottom: 2,
+        }}
+      >
         Configuración
       </Typography>
 
-      <div>
-        <Typography variant="body1">Nombre de usuario:</Typography>
+      {/* Campo de nombre de usuario */}
+      <Box>
+        <Typography variant="body1" sx={{ marginBottom: 1 }}>
+          Nombre de usuario:
+        </Typography>
         <TextField
           value={user.name}
           onChange={handleNameChange}
           placeholder="Ingresa tu nombre"
           fullWidth
-          sx={globalStyles.inputField}
+          variant="outlined"
         />
-      </div>
+      </Box>
 
-      <div>
-        <Typography variant="body1">País:</Typography>
+      {/* Selector de país */}
+      <Box>
+        <Typography variant="body1" sx={{ marginBottom: 1 }}>
+          País:
+        </Typography>
         <Select
           value={settings.country}
           onChange={handleCountryChange}
           fullWidth
-          sx={globalStyles.inputField}
+          variant="outlined"
         >
           <MenuItem value="us">Estados Unidos</MenuItem>
-          <MenuItem value="mx">México</MenuItem>
-          <MenuItem value="ar">Argentina</MenuItem>
-          <MenuItem value="cl">Chile</MenuItem>
         </Select>
-      </div>
+      </Box>
 
-      <div>
-        <Typography variant="body1">Categoría:</Typography>
+      {/* Selector de categoría */}
+      <Box>
+        <Typography variant="body1" sx={{ marginBottom: 1 }}>
+          Categoría:
+        </Typography>
         <Select
           value={settings.category}
           onChange={handleCategoryChange}
           fullWidth
-          sx={globalStyles.inputField}
+          variant="outlined"
         >
           <MenuItem value="general">General</MenuItem>
           <MenuItem value="technology">Tecnología</MenuItem>
@@ -63,13 +88,17 @@ const SettingsPage = () => {
           <MenuItem value="health">Salud</MenuItem>
           <MenuItem value="business">Negocios</MenuItem>
         </Select>
-      </div>
+      </Box>
 
-      <div>
-        <Button onClick={toggleTheme} sx={globalStyles.button}>
+      {/* Botón para cambiar tema */}
+      <Box sx={{ textAlign: "center", marginTop: 3 }}>
+        <Button
+          variant="contained"
+          onClick={toggleTheme}
+        >
           Cambiar a {user.theme === "light" ? "Tema Oscuro" : "Tema Claro"}
         </Button>
-      </div>
+      </Box>
     </Box>
   );
 };

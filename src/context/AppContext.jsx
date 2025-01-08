@@ -64,6 +64,21 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+  // Función para filtrar noticias por la consulta de búsqueda
+  const searchArticles = (query) => {
+    if (!query) {
+      setFilteredArticles(articles); // Si no hay consulta, mostramos todos los artículos
+      return;
+    }
+
+    const filtered = articles.filter((article) =>
+      article.title.toLowerCase().includes(query.toLowerCase()) || 
+      article.description.toLowerCase().includes(query.toLowerCase())
+    );
+    
+    setFilteredArticles(filtered); // Actualiza los artículos filtrados
+  };
+
   // Recargar noticias al cambiar página o configuraciones
   useEffect(() => {
     fetchArticles(currentPage);
@@ -88,8 +103,9 @@ export const AppProvider = ({ children }) => {
         setSettings,
         toggleTheme,
         articles,
-        filteredArticles, // Añadir filteredArticles al contexto
-        setFilteredArticles, // Añadir setFilteredArticles al contexto
+        filteredArticles,
+        setFilteredArticles,
+        searchArticles, // Agregar esta función al contexto
         currentPage,
         setCurrentPage,
         totalPages,
