@@ -1,6 +1,17 @@
 import { useState } from "react";
 import { useAppContext } from "../context/AppContext";
-import { Button, Typography, Card, CardMedia, CardContent, CardActions, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
+import {
+  Button,
+  Typography,
+  Card,
+  CardMedia,
+  CardContent,
+  CardActions,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+} from "@mui/material";
 
 const NewsCard = ({ article }) => {
   const { addFavorite, removeFavorite, favorites } = useAppContext();
@@ -31,17 +42,17 @@ const NewsCard = ({ article }) => {
 
   return (
     <>
-      <Card 
-        sx={{ 
-          maxWidth: 345, 
-          width: "100%", 
-          borderRadius: 2, 
-          boxShadow: 3, 
-          overflow: "hidden", 
-          display: "flex", 
-          flexDirection: "column", 
+      <Card
+        sx={{
+          maxWidth: 345,
+          width: "100%", // Asegura que ocupe todo el ancho disponible
+          borderRadius: 2,
+          boxShadow: 3,
+          overflow: "hidden",
+          display: "flex",
+          flexDirection: "column",
           justifyContent: "space-between",
-          margin: "auto", 
+          margin: "auto",
         }}
       >
         {/* Imagen del artículo */}
@@ -53,23 +64,23 @@ const NewsCard = ({ article }) => {
             alt={article.title}
             sx={{
               objectFit: "cover",
-              borderBottom: "1px solid rgba(0, 0, 0, 0.1)", 
+              borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
             }}
           />
         )}
 
         {/* Contenido del artículo */}
         <CardContent sx={{ flexGrow: 1 }}>
-          <Typography 
-            variant="h6" 
-            gutterBottom 
+          <Typography
+            variant="h6"
+            gutterBottom
             sx={{ fontWeight: 600, lineHeight: 1.4 }}
           >
             {article.title}
           </Typography>
-          <Typography 
-            variant="body2" 
-            color="text.secondary" 
+          <Typography
+            variant="body2"
+            color="text.secondary"
             sx={{ marginBottom: 2 }}
           >
             {article.description || "No hay descripción disponible."}
@@ -84,17 +95,13 @@ const NewsCard = ({ article }) => {
             padding: "0 16px 16px 16px",
           }}
         >
-          <Button 
-            size="small" 
-            variant="text" 
-            onClick={handleOpenModal} // Abre el modal en vez de redirigir
-          >
+          <Button size="small" variant="text" onClick={handleOpenModal}>
             Leer más
           </Button>
-          <Button 
-            size="small" 
-            variant={isFavorite ? "contained" : "outlined"} 
-            color="primary" 
+          <Button
+            size="small"
+            variant={isFavorite ? "contained" : "outlined"}
+            color="primary"
             onClick={handleFavorite}
           >
             {isFavorite ? "Quitar de Favoritos" : "Agregar a Favoritos"}
@@ -103,27 +110,27 @@ const NewsCard = ({ article }) => {
       </Card>
 
       {/* Modal con la información completa del artículo */}
-      <Dialog 
-        open={openModal} 
-        onClose={handleCloseModal} // Gestionar el cierre con onClose
-        BackdropProps={{
-          onClick: (e) => {
-            // Evita el cierre si se hace clic fuera del modal
-            e.stopPropagation();
-          }
-        }}
-      >
+      <Dialog open={openModal} onClose={handleCloseModal}>
         <DialogTitle>{article.title}</DialogTitle>
         <DialogContent>
           {/* Mostrar la imagen si está disponible */}
           {article.urlToImage && (
-            <img 
-              src={article.urlToImage} 
-              alt={article.title} 
-              style={{ width: "100%", marginBottom: "16px", objectFit: "cover", height: "200px" }}
+            <img
+              src={article.urlToImage}
+              alt={article.title}
+              style={{
+                width: "100%",
+                marginBottom: "16px",
+                objectFit: "cover",
+                height: "200px",
+              }}
             />
           )}
           {/* Mostrar el contenido completo o descripción */}
+          <Typography variant="body1" paragraph>
+            {article.author || "No hay contenido adicional disponible."}<br />
+            {article.publishedAt || "No hay contenido adicional disponible."}
+          </Typography>
           <Typography variant="body1" paragraph>
             {article.content || "No hay contenido adicional disponible."}
           </Typography>
@@ -134,6 +141,13 @@ const NewsCard = ({ article }) => {
         <DialogActions>
           <Button onClick={handleCloseModal} color="primary">
             Cerrar
+          </Button>
+          <Button
+            onClick={() => window.open(article.url, "_blank")}
+            color="primary"
+            disabled={!article.url}
+          >
+            Ir a fuente oficial
           </Button>
         </DialogActions>
       </Dialog>

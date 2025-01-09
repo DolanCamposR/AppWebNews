@@ -1,19 +1,18 @@
 import { createContext, useState, useContext, useEffect } from "react";
-import { createTheme, ThemeProvider } from "@mui/material/styles"; 
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 // Crear contexto
 const AppContext = createContext();
 
 // Proveedor del contexto
 export const AppProvider = ({ children }) => {
-  // Obtener el tema guardado en localStorage o usar "light" por defecto
   const savedTheme = localStorage.getItem("theme") || "light";
-  
+
   const [user, setUser] = useState({ name: "Invitado", theme: savedTheme });
   const [favorites, setFavorites] = useState([]);
   const [settings, setSettings] = useState({ country: "us", category: "general" });
   const [articles, setArticles] = useState([]); // Todas las noticias
-  const [filteredArticles, setFilteredArticles] = useState([]); // Noticias filtradas para búsqueda
+  const [filteredArticles, setFilteredArticles] = useState([]); // Noticias filtradas
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const articlesPerPage = 5; // Noticias por página
@@ -34,49 +33,40 @@ export const AppProvider = ({ children }) => {
     const favoriteWithId = { ...newsItem, id: newsItem.url }; // Usamos el `url` como id único
     setFavorites((prev) => [...prev, favoriteWithId]);
   };
-  
+
   const removeFavorite = (newsId) => {
     setFavorites((prev) => prev.filter((item) => item.id !== newsId));
   };
 
   // Función para cargar noticias
-  const fetchArticles = async (page = 1) => {
-    const { country, category } = settings;
+  const fetchArticles = async (page = 1, query = "") => {
     try {
-      const response = await fetch(
-        `https://newsapi.org/v2/top-headlines?country=${country}&category=${category}&page=${page}&pageSize=${articlesPerPage}&apiKey=${API_KEY}`
-      );
+      const url = `https://newsapi.org/v2/top-headlines?country=${settings.country}&category=${settings.category}&page=${page}&pageSize=${articlesPerPage}&apiKey=${API_KEY}${
+        query ? `&q=${query}` : ""
+      }`;
+
+      console.log("Fetching articles from:", url);
+
+      const response = await fetch(url);
       if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
+
       const data = await response.json();
+      console.log("Fetched data:", data);
 
-      // Filtramos los artículos para eliminar los que tengan el estado "removed"
-      const filteredArticles = data.articles.filter(
-        (article) => article.status !== "removed"
-      );
-
-      setArticles(filteredArticles || []);
-      setFilteredArticles(filteredArticles || []); // Actualizar noticias filtradas al cargar nuevas noticias
+      setArticles(data.articles || []);
+      setFilteredArticles(data.articles || []);
       setTotalPages(Math.ceil(data.totalResults / articlesPerPage));
     } catch (error) {
       console.error("Error al cargar noticias:", error.message);
       setArticles([]);
-      setFilteredArticles([]); // Reiniciar noticias filtradas en caso de error
+      setFilteredArticles([]);
     }
   };
 
-  // Función para filtrar noticias por la consulta de búsqueda
+  // Función para buscar artículos usando la API
   const searchArticles = (query) => {
-    if (!query) {
-      setFilteredArticles(articles); // Si no hay consulta, mostramos todos los artículos
-      return;
-    }
-
-    const filtered = articles.filter((article) =>
-      article.title.toLowerCase().includes(query.toLowerCase()) || 
-      article.description.toLowerCase().includes(query.toLowerCase())
-    );
-    
-    setFilteredArticles(filtered); // Actualiza los artículos filtrados
+    setCurrentPage(1); // Reinicia a la primera página para nuevas búsquedas
+    fetchArticles(1, query); // Llama a fetchArticles con la consulta
   };
 
   // Recargar noticias al cambiar página o configuraciones
@@ -104,15 +94,13 @@ export const AppProvider = ({ children }) => {
         toggleTheme,
         articles,
         filteredArticles,
-        setFilteredArticles,
-        searchArticles, // Agregar esta función al contexto
+        searchArticles, // Función de búsqueda
         currentPage,
         setCurrentPage,
         totalPages,
-        fetchArticles,
       }}
     >
-      <ThemeProvider theme={theme}>{children}</ThemeProvider> {/* Aplicar el ThemeProvider */}
+      <ThemeProvider theme={theme}>{children}</ThemeProvider>
     </AppContext.Provider>
   );
 };

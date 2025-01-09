@@ -7,11 +7,12 @@ const NewsPage = () => {
   return (
     <Box
       sx={{
-        maxWidth: 800,
-        margin: "0 auto",
+        width: "100%", // Asegura que el Box ocupe todo el ancho disponible
+        height: "100vh", // Asegura que ocupe toda la altura de la pantalla
         padding: 3,
         display: "flex",
         flexDirection: "column",
+        justifyContent: "space-between", // Distribuye el contenido entre el principio y final
         gap: 3,
         backgroundColor: "background.paper",
         borderRadius: 2,
@@ -31,31 +32,33 @@ const NewsPage = () => {
       </Typography>
 
       {/* Lista de noticias */}
-      {articles.map((article, index) => (
-        <Card
-          key={index}
-          sx={{
-            mb: 2,
-            boxShadow: 2,
-            borderRadius: 2,
-          }}
-        >
-          <CardContent>
-            <Typography
-              variant="h6"
-              sx={{
-                fontWeight: "bold",
-                mb: 1,
-              }}
-            >
-              {article.title}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              {article.description}
-            </Typography>
-          </CardContent>
-        </Card>
-      ))}
+      <Box sx={{ flexGrow: 1 }}>
+        {articles.map((article, index) => (
+          <Card
+            key={index}
+            sx={{
+              mb: 2,
+              boxShadow: 2,
+              borderRadius: 2,
+            }}
+          >
+            <CardContent>
+              <Typography
+                variant="h6"
+                sx={{
+                  fontWeight: "bold",
+                  mb: 1,
+                }}
+              >
+                {article.title}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                {article.description}
+              </Typography>
+            </CardContent>
+          </Card>
+        ))}
+      </Box>
 
       {/* Controles de paginación */}
       <Box sx={{ display: "flex", gap: 2, justifyContent: "center", mt: 2 }}>

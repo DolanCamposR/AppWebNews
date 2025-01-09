@@ -8,11 +8,19 @@ const Navbar = () => {
 
   return (
     <AppBar position="sticky" color="primary">
-      <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-        <Typography variant="h6" color="inherit">
+      <Toolbar sx={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap" }}>
+        <Typography variant="h6" color="inherit" sx={{ flexGrow: 1 }}>
           Bienvenido, {user.name}
         </Typography>
-        <Box sx={{ display: "flex", gap: 2 }}>
+        <Box
+          sx={{
+            display: "flex",
+            gap: 2,
+            flexWrap: "wrap", // Permite que los botones se acomoden en múltiples líneas en pantallas pequeñas
+            justifyContent: "flex-end", // Alinea los botones a la derecha
+            gap: 1,
+          }}
+        >
           <Button color="inherit" component={Link} to="/">
             Inicio
           </Button>

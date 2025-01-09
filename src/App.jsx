@@ -12,7 +12,7 @@ function App() {
     <AppProvider>
       <Router>
         {/* Barra de navegación */}
-        <AppBar position="sticky" color="primary">
+        <AppBar position="fixed" color="primary"> {/* Cambié sticky por fixed */}
           <Toolbar
             sx={{
               display: "flex",
@@ -30,11 +30,14 @@ function App() {
         <Container
           maxWidth="lg"
           sx={{
-            mt: 4,
+            mt: 8, // Ajusté el margen superior para que el contenido no quede debajo de la AppBar
             backgroundColor: "background.default",
-            minHeight: "100vh",
+            height: "100vh",
+            width: "100", // Aseguramos que el contenedor ocupe toda la altura disponible
             paddingBottom: 4,
             borderRadius: 2,
+            display: "flex", // Usamos flexbox para asegurarnos de que el contenido ocupe todo el espacio
+            flexDirection: "column",
           }}
         >
           <Paper
@@ -42,6 +45,7 @@ function App() {
             sx={{
               padding: 3,
               borderRadius: 2,
+              flexGrow: 1, // Hace que el Paper ocupe todo el espacio restante
             }}
           >
             <Routes>

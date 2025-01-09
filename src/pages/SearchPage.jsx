@@ -1,25 +1,33 @@
 import { useAppContext } from "../context/AppContext";
 import { useEffect } from "react";
-import NewsCard from "../Components/NewsCard"; 
-import { Container, Typography, Grid, Paper} from "@mui/material";
-import SearchBar from "../Components/SearchBar"; 
+import NewsCard from "../Components/NewsCard";
+import { Container, Typography, Grid, Paper } from "@mui/material";
+import SearchBar from "../Components/SearchBar";
 
 const SearchPage = () => {
-  const { filteredArticles} = useAppContext();
+  const { filteredArticles } = useAppContext();
 
   // Asegurarse de que filteredArticles siempre sea un array
   const articlesToShow = filteredArticles || [];
 
   useEffect(() => {
-    //cargar artículos al iniciar la página si no hay filtros
-    if (!filteredArticles.length) {
-      // defecto
-    }
+    // Se podría agregar lógica adicional aquí si es necesario
   }, [filteredArticles]);
 
   return (
-    <Container maxWidth="lg" sx={{ mt: 4 }}>
-      <Typography variant="h4" gutterBottom>
+    <Container
+      maxWidth="lg"
+      sx={{
+        mt: 4,
+        height: "100vh", // Asegura que el contenedor ocupe toda la altura de la pantalla
+        width: "100%",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between", // Asegura que el contenido se distribuye en toda la pantalla
+        paddingBottom: 4,
+      }}
+    >
+      <Typography variant="h4" gutterBottom sx={{ textAlign: "center" }}>
         Buscar Noticias
       </Typography>
 

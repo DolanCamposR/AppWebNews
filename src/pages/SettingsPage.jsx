@@ -1,8 +1,10 @@
 import { useAppContext } from "../context/AppContext";
+import { useNavigate } from "react-router-dom"; // Importar useNavigate
 import { Box, Typography, TextField, MenuItem, Select, Button } from "@mui/material";
 
 const SettingsPage = () => {
   const { user, setUser, settings, setSettings, toggleTheme } = useAppContext();
+  const navigate = useNavigate(); // Hook para navegación
 
   const handleNameChange = (e) => {
     setUser({ ...user, name: e.target.value });
@@ -16,10 +18,13 @@ const SettingsPage = () => {
     setSettings({ ...settings, category: e.target.value });
   };
 
+  const redirectToSearch = () => {
+    navigate("/search"); // Redirige a la página de búsqueda
+  };
+
   return (
     <Box
       sx={{
-        maxWidth: 600,
         margin: "0 auto",
         padding: 4,
         display: "flex",
@@ -28,6 +33,8 @@ const SettingsPage = () => {
         backgroundColor: "background.paper",
         borderRadius: 2,
         boxShadow: 3,
+        height: "100vh", // Asegura que el contenedor ocupe toda la altura de la pantalla
+        width: "100%", // Asegura que el contenedor ocupe toda la anchura de la pantalla
       }}
     >
       {/* Título */}
@@ -90,13 +97,22 @@ const SettingsPage = () => {
         </Select>
       </Box>
 
-      {/* Botón para cambiar tema */}
-      <Box sx={{ textAlign: "center", marginTop: 3 }}>
-        <Button
-          variant="contained"
-          onClick={toggleTheme}
-        >
+      {/* Botones para cambiar tema y redirigir */}
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          gap: 2,
+          marginTop: 3,
+          flexWrap: "wrap", // Asegura que los botones se ajusten bien en pantallas pequeñas
+          width: "100%", // Asegura que los botones se ajusten bien en pantallas pequeñas
+        }}
+      >
+        <Button variant="contained" onClick={toggleTheme} fullWidth={false}>
           Cambiar a {user.theme === "light" ? "Tema Oscuro" : "Tema Claro"}
+        </Button>
+        <Button variant="outlined" onClick={redirectToSearch} fullWidth={false}>
+          Ir a Buscar
         </Button>
       </Box>
     </Box>

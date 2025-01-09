@@ -16,8 +16,10 @@ const SearchBar = () => {
     <Box
       sx={{
         display: "flex",
+        flexDirection: { xs: "column", sm: "row" }, // Asegura que en pantallas pequeñas sea en columna y en pantallas más grandes en fila
         alignItems: "center",
         gap: 2,
+        width: "100%", // Asegura que ocupe el 100% del contenedor disponible
         mb: 4,
       }}
     >
@@ -26,12 +28,18 @@ const SearchBar = () => {
         label="Buscar noticias..."
         variant="outlined"
         fullWidth
+        sx={{
+          minWidth: 200, // Asegura que el campo de texto tenga un tamaño mínimo
+        }}
       />
       <Button
         variant="contained"
         color="primary"
         startIcon={<SearchIcon />}
         onClick={handleSearch}
+        sx={{
+          width: { xs: "100%", sm: "auto" }, // En pantallas pequeñas el botón ocupará todo el ancho, en pantallas grandes se ajustará al tamaño necesario
+        }}
       >
         Buscar
       </Button>
